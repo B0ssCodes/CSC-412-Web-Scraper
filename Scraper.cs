@@ -47,7 +47,7 @@ namespace CSC_412_Web_Scraper
 
             // Select all the anchor tags
             HtmlNodeCollection anchorTags = htmlDocument.DocumentNode.SelectNodes("//a");
-
+            
             // If we have titles, loop through them and create a new ScrapedItem object for each one
             if (productTitles != null)
             {
