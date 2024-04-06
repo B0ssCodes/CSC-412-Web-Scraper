@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Linq;
+using System.Diagnostics;
+using System.Windows.Documents;
 
 namespace CSC_412_Web_Scraper
 {
@@ -12,6 +14,8 @@ namespace CSC_412_Web_Scraper
         public string Company1Price { get; set; }
         public string Company2Price { get; set; }
         public string Company3Price { get; set; }
+        public string RecommendedCompany { get; set; }
+        public string RecommendedUrl { get; set; }
     }
 
     public partial class MainWindow : Window
@@ -88,6 +92,27 @@ namespace CSC_412_Web_Scraper
                         carData.Company3Price = item.Price.ToString();
                         break;
                 }
+
+                // After setting the prices, compare them and set the RecommendedCompany
+                int price1 = int.TryParse(carData.Company1Price, out int tempVal1) ? tempVal1 : int.MaxValue;
+                int price2 = int.TryParse(carData.Company2Price, out int tempVal2) ? tempVal2 : int.MaxValue;
+                int price3 = int.TryParse(carData.Company3Price, out int tempVal3) ? tempVal3 : int.MaxValue;
+
+                if (price1 <= price2 && price1 <= price3)
+                {
+                    carData.RecommendedCompany = "Buy From Zoom Motors: ";
+                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "zoom-motors.netlify.app" && item.Title == carData.CarName).Url;
+                }
+                else if (price2 <= price1 && price2 <= price3)
+                {
+                    carData.RecommendedCompany = "driveway-deals.netlify.app";
+                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "driveway-deals.netlify.app" && item.Title == carData.CarName).Url;
+                }
+                else
+                {
+                    carData.RecommendedCompany = "easy-auto.netlify.app";
+                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
+                }
             }
 
             // When the data is updated, the loading bar and the scraping text become invisible, and the data grid becomes visible
@@ -95,5 +120,13 @@ namespace CSC_412_Web_Scraper
             ScrapingText.Visibility = Visibility.Collapsed;
             CarDataGrid.Visibility = Visibility.Visible;
         }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            var hyperlink = (Hyperlink)e.OriginalSource;
+            Process.Start(new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) { UseShellExecute = true });
+        }
     }
+
+    
 }

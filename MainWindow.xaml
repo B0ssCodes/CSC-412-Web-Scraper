@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSC_412_Web_Scraper"
         mc:Ignorable="d"
-        Title="Web Scraper" Height="450" Width="800">
+        Title="Web Scraper" 
+        WindowState="Maximized">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Welcome to the Web Scraper" FontWeight="Bold" FontSize="24" TextAlignment="Center" Margin="0,0,0,20" />
@@ -41,6 +42,14 @@
                 <DataGridTextColumn Header="Zoom Motors" Binding="{Binding Company1Price}" Width="*" />
                 <DataGridTextColumn Header="DriveWay Deals" Binding="{Binding Company2Price}" Width="*" />
                 <DataGridTextColumn Header="Easy Auto" Binding="{Binding Company3Price}" Width="*" />
+                <DataGridHyperlinkColumn Header="Our Recommendation" Binding="{Binding RecommendedUrl}" Width="*">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextDecorations" Value="Underline" />
+                            <EventSetter Event="Hyperlink.Click" Handler="Hyperlink_Click" />
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
