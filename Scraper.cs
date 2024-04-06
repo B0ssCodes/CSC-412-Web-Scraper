@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,8 +10,8 @@ namespace CSC_412_Web_Scraper
         // Create a new HtmlWeb object to load HTML pages from a URL
         private HtmlWeb htmlWeb = new HtmlWeb();
 
-        // This list will hold all scraped items. FOR MICHEL: Try using ConcurrentBag so all parallel threads added later can add the objects to it
-        public List<ScrapedItem> scrapedItems = new List<ScrapedItem>();
+        //This ConcurrentBag will hold all scraped items.
+        public ConcurrentBag<ScrapedItem> scrapedItems = new ConcurrentBag<ScrapedItem>();
 
         // Method to start the scraping process
         public async Task StartScraping()
@@ -25,14 +26,20 @@ namespace CSC_412_Web_Scraper
             List<string> visitedUrls2 = new List<string>();
             List<string> visitedUrls3 = new List<string>();
 
-            // Call the Scrape method. FOR MICHEL: Remove await and make it parallel, rn it's awaiting at each one
-            await Scrape($"{url1}", null, visitedUrls1);
-            await Scrape($"{url2}", null, visitedUrls2);
-            await Scrape($"{url3}", null, visitedUrls3);
+            // Call the Scrape method in parallel
+            await Task.WhenAll(
+                Scrape(url1, null, visitedUrls1),
+                Scrape(url2, null, visitedUrls2),
+                Scrape(url3, null, visitedUrls3)
+            );
 
         }
 
         // Takes the base URL, a nullable string for passed href (anything extra on the url), and the list of visited URLs created above
+        //Recursively follows links on each page to scrape additional pages
+        //url: Base URL to scrape
+        //passedHref: Additional path to append to the base URL
+        //visitedUrls: List of already visited URLs to avoid duplicates
         private async Task Scrape(string url, string? passedHref, List<string> visitedUrls)
         {
             // Base URL of the site
@@ -65,7 +72,7 @@ namespace CSC_412_Web_Scraper
                     // Get the domain of the URL
                     string domain = new Uri(baseUrl).Host;
 
-                    // Create a new ScrapedItem object and add it to the list FOR MICHEL: (ConcurrentBag should work too)
+                    // Create a new ScrapedItem object and add it to the bag
                     ScrapedItem item = new ScrapedItem
                     {
                         Title = title,
@@ -78,7 +85,12 @@ namespace CSC_412_Web_Scraper
                 }
             }
 
+            //this will hold all the tasks that will be created for each anchor tag 
+            List<Task> tasks = new List<Task>();
+
             // Loop over each anchor tag and scrape the URL if it hasn't been visited yet
+            // If the href is already in the visistedUrls list or if it's the root ("/"), skip it
+            //Otherwise, add the href to the visistedUrls list and start a new scrape task for it
             foreach (HtmlNode anchorTag in anchorTags)
             {
                 string href = anchorTag.GetAttributeValue("href", string.Empty);
@@ -90,19 +102,20 @@ namespace CSC_412_Web_Scraper
                 {
                     visitedUrls.Add(href);
 
-                    // FOR MICHEL: Try making this also parallel instead of await.
-                    await Scrape(baseUrl, href, visitedUrls);
+                    //Add the task to the list instead of awaiting it
+                    tasks.Add(Scrape(baseUrl, href, visitedUrls));
                 }
             }
+            await Task.WhenAll(tasks);
         }
 
         // Class to hold the scraped data
         public class ScrapedItem
         {
-            public string Title { get; set; }
+            public string Title { get; set; } = string.Empty;
             public int Price { get; set; }
-            public string Url { get; set; }
-            public string Domain { get; set; }
+            public string Url { get; set; } = string.Empty;
+            public string Domain { get; set; } = string.Empty;
         }
 
 

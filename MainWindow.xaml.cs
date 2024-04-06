@@ -10,12 +10,12 @@ namespace CSC_412_Web_Scraper
     // Class that stores the name of each car and its price at each company
     public class CarData
     {
-        public string CarName { get; set; }
-        public string Company1Price { get; set; }
-        public string Company2Price { get; set; }
-        public string Company3Price { get; set; }
-        public string RecommendedCompany { get; set; }
-        public string RecommendedUrl { get; set; }
+        public string CarName { get; set; } = string.Empty;
+        public string Company1Price { get; set; } = string.Empty;
+        public string Company2Price { get; set; } = string.Empty;
+        public string Company3Price { get; set; } = string.Empty;
+        public string RecommendedCompany { get; set; } = string.Empty;
+        public string RecommendedUrl { get; set; } = string.Empty;
     }
 
     public partial class MainWindow : Window
@@ -63,7 +63,7 @@ namespace CSC_412_Web_Scraper
             }, TaskScheduler.FromCurrentSynchronizationContext()); // Ensure the continuation runs on the UI thread
         }
 
-        public void UpdateCarData(List<Scraper.ScrapedItem> scrapedItems)
+        public void UpdateCarData(IEnumerable<Scraper.ScrapedItem> scrapedItems)
         {
             // Clear the existing data
             CarCollection.Clear();
