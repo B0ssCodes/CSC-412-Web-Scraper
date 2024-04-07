@@ -11,11 +11,13 @@ namespace CSC_412_Web_Scraper
         // Create a new HtmlWeb object to load HTML pages from a URL
         private HtmlWeb htmlWeb = new HtmlWeb();
 
+        //Create a new HttpClient object that sends and receives HTTP requests from a URL
         private static readonly HttpClient httpClient = new HttpClient();
 
+        // Method to load the HTML from a URL and return an HtmlDocument object
         private async Task<HtmlDocument> LoadHtmlAsync(string url)
         {
-            var html = await httpClient.GetStringAsync(url);
+            var html = await httpClient.GetStringAsync(url);  //GET request to the URL
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
             return htmlDocument;
