@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CSC_412_Web_Scraper
@@ -9,6 +10,16 @@ namespace CSC_412_Web_Scraper
     {
         // Create a new HtmlWeb object to load HTML pages from a URL
         private HtmlWeb htmlWeb = new HtmlWeb();
+
+        private static readonly HttpClient httpClient = new HttpClient();
+
+        private async Task<HtmlDocument> LoadHtmlAsync(string url)
+        {
+            var html = await httpClient.GetStringAsync(url);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+            return htmlDocument;
+        }
 
         //This ConcurrentBag will hold all scraped items.
         public ConcurrentBag<ScrapedItem> scrapedItems = new ConcurrentBag<ScrapedItem>();
@@ -46,7 +57,8 @@ namespace CSC_412_Web_Scraper
             string baseUrl = url;
 
             // Load the html document from the URL
-            HtmlDocument htmlDocument = htmlWeb.Load(url + passedHref);
+            Console.WriteLine(url + passedHref);
+            HtmlDocument htmlDocument = await LoadHtmlAsync(url + passedHref);
 
             // Select the h4 tags for titles and the h5 tags for prices
             HtmlNodeCollection productTitles = htmlDocument.DocumentNode.SelectNodes("//h4");
@@ -54,7 +66,7 @@ namespace CSC_412_Web_Scraper
 
             // Select all the anchor tags
             HtmlNodeCollection anchorTags = htmlDocument.DocumentNode.SelectNodes("//a");
-            
+
             // If we have titles, loop through them and create a new ScrapedItem object for each one
             if (productTitles != null)
             {
