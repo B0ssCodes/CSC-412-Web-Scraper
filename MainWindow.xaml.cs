@@ -4,6 +4,7 @@ using System.Windows;
 using System.Linq;
 using System.Diagnostics;
 using System.Windows.Documents;
+using System.ComponentModel;
 
 namespace CSC_412_Web_Scraper
 {
@@ -22,6 +23,7 @@ namespace CSC_412_Web_Scraper
     {
         // The whole car collection to display in a table in the end
         public ObservableCollection<CarData> CarCollection { get; set; }
+    
 
         // XAML main window constructor
         public MainWindow()
@@ -36,6 +38,32 @@ namespace CSC_412_Web_Scraper
             
            
         }
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += Worker_DoWork;
+            worker.ProgressChanged += worker_progresschanged;
+            worker.RunWorkerAsync();
+            
+        }
+
+        void Worker_DoWork(object? sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(10);
+            }
+                
+            
+        }
+        
+        void worker_progresschanged(object sender,ProgressChangedEventArgs e)
+        {
+            LoadingBar.Value = e.ProgressPercentage;
+        }
+    
 
         // When button is clicked, start the scraping process
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -65,12 +93,14 @@ namespace CSC_412_Web_Scraper
 
         public void UpdateCarData(IEnumerable<Scraper.ScrapedItem> scrapedItems)
         {
+            
             // Clear the existing data
             CarCollection.Clear();
 
             // Add the new data
             foreach (var item in scrapedItems)
             {
+                
                 // Find the car in the collection, if it doesn't exist, create a new one
                 var carData = CarCollection.FirstOrDefault(c => c.CarName == item.Title);
                 if (carData == null)
@@ -113,6 +143,8 @@ namespace CSC_412_Web_Scraper
                     carData.RecommendedCompany = "easy-auto.netlify.app";
                     carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
                 }
+
+     
             }
 
             // When the data is updated, the loading bar and the scraping text become invisible, and the data grid becomes visible
