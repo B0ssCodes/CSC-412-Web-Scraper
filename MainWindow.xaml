@@ -67,7 +67,7 @@
             </Button>
             <TextBlock Name="ScrapingText" Text="Scraping..." FontWeight="Bold" FontSize="20" TextAlignment="Center" Visibility="Collapsed" Foreground="#FFFFFF" />
             <DockPanel LastChildFill="False">
-                <ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Minimum="0" Maximum="47" Visibility="Collapsed" Width="400" Height="20" Margin="0,7" DockPanel.Dock="Left" Foreground="#FFFFFF"/>
+                <ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Minimum="0" Maximum="47" Visibility="Collapsed" Width="400" Height="20" Margin="0,7" DockPanel.Dock="Left" Foreground="Aqua"/>
                 <TextBlock x:Name="LoadingBarNum"  Text="{Binding ElementName=LoadingBar, Path=Value, StringFormat={}{0} / 47}" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="10,0,0,0" Visibility="Collapsed" Foreground="#FFFFFF" />
             </DockPanel>
             <TextBlock x:Name="UrlTextBlock" TextAlignment="Center" Margin="0, 3" Visibility="Collapsed" Foreground="#FFFFFF" />
