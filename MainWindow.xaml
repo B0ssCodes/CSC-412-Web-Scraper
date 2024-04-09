@@ -16,7 +16,7 @@
             <TextBlock Text="Easy Auto - easy-auto.netlify.app" FontSize="16" TextAlignment="Center" Margin="0,0,0,20" />
             <Button x:Name="StartButton" Content="Start Scraping" Click="StartButton_Click" Width="200" Height="50" FontSize="18" Margin="0,0,0,20" />
             <TextBlock Name="ScrapingText" Text="Scraping..." FontWeight="Bold" FontSize="20" TextAlignment="Center" Visibility="Collapsed" />
-            <ProgressBar x:Name="LoadingBar" IsIndeterminate="True" Visibility="Collapsed" Width="400" Height="20" />
+            <ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Minimum="0" Maximum="50" Visibility="Collapsed" Width="400" Height="20" />
         </StackPanel>
         <DataGrid x:Name="CarDataGrid" AutoGenerateColumns="False" 
               RowBackground="White" AlternatingRowBackground="LightGray" 

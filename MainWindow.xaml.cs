@@ -32,9 +32,6 @@ namespace CSC_412_Web_Scraper
 
             // Set the data context of the window to itself
             this.DataContext = this;
-
-            
-           
         }
 
         // When button is clicked, start the scraping process
@@ -48,8 +45,15 @@ namespace CSC_412_Web_Scraper
             // Create a new scraper object
             var scraper = new Scraper();
 
-            // Use a Task.Run to not block the UI thread and run the backend logic on a seperate thread
-            Task.Run(() => scraper.StartScraping()).ContinueWith(t =>
+            // Create a Progress<int> and handle its ProgressChanged event to update the UI
+            var progress = new Progress<int>(value =>
+            {
+                // Update the value of the loading bar
+                LoadingBar.Value = value;
+            });
+
+            // Use a Task.Run to not block the UI thread and run the backend logic on a separate thread
+            Task.Run(() => scraper.StartScraping(progress)).ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
