@@ -4,6 +4,7 @@ using System.Windows;
 using System.Linq;
 using System.Diagnostics;
 using System.Windows.Documents;
+using static CSC_412_Web_Scraper.Scraper;
 
 namespace CSC_412_Web_Scraper
 {
@@ -40,16 +41,20 @@ namespace CSC_412_Web_Scraper
             // Change the visibility of the UI elements
             StartButton.Visibility = Visibility.Collapsed;
             LoadingBar.Visibility = Visibility.Visible;
+            LoadingBarNum.Visibility = Visibility.Visible;
             ScrapingText.Visibility = Visibility.Visible;
+            UrlTextBlock.Visibility = Visibility.Visible;
+
 
             // Create a new scraper object
             var scraper = new Scraper();
 
             // Create a Progress<int> and handle its ProgressChanged event to update the UI
-            var progress = new Progress<int>(value =>
+            var progress = new Progress<ProgressReport>(report =>
             {
-                // Update the value of the loading bar
-                LoadingBar.Value = value;
+                // Update the loading bar and the URL
+                LoadingBar.Value = report.Progress;
+                UrlTextBlock.Text = report.Url;  // Assuming you have a TextBlock named UrlTextBlock
             });
 
             // Use a Task.Run to not block the UI thread and run the backend logic on a separate thread

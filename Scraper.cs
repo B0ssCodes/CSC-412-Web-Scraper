@@ -21,7 +21,7 @@ namespace CSC_412_Web_Scraper
             return htmlDocument;
         }
 
-        public async Task StartScraping(IProgress<int> progress)
+        public async Task StartScraping(IProgress<ProgressReport> progress)
         {
             string url1 = "https://zoom-motors.netlify.app";
             string url2 = "https://driveway-deals.netlify.app";
@@ -38,7 +38,7 @@ namespace CSC_412_Web_Scraper
             );
         }
 
-        private async Task Scrape(string url, string? passedHref, List<string> visitedUrls, IProgress<int> progress)
+        private async Task Scrape(string url, string? passedHref, List<string> visitedUrls, IProgress<ProgressReport> progress)
         {
             string baseUrl = url;
             HtmlDocument htmlDocument = await LoadHtmlAsync(url + passedHref);
@@ -69,7 +69,7 @@ namespace CSC_412_Web_Scraper
 
                     scrapedItems.Add(item);
                     prog++;
-                    progress.Report(prog);
+                    progress.Report(new ProgressReport { Progress = prog, Url = finalUrl });
                 }
             }
 
@@ -97,6 +97,12 @@ namespace CSC_412_Web_Scraper
             public int Price { get; set; }
             public string Url { get; set; } = string.Empty;
             public string Domain { get; set; } = string.Empty;
+        }
+
+        public class ProgressReport
+        {
+            public int Progress { get; set; }
+            public string Url { get; set; } = string.Empty;
         }
     }
 }
