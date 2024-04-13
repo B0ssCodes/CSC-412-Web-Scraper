@@ -145,6 +145,7 @@ namespace CSC_412_Web_Scraper
             CarDataGrid.Visibility = Visibility.Visible;
         }
 
+        // Open the URL in the default browser when the hyperlink is clicked
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             var hyperlink = (Hyperlink)e.OriginalSource;
