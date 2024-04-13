@@ -65,6 +65,7 @@
                     </EventTrigger>
                 </Button.Triggers>
             </Button>
+            
             <TextBlock Name="ScrapingText" Text="Scraping..." FontWeight="Bold" FontSize="20" TextAlignment="Center" Visibility="Collapsed" Foreground="#FFFFFF" />
             <DockPanel LastChildFill="False">
                 <ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Minimum="0" Maximum="47" Visibility="Collapsed" Width="400" Height="20" Margin="0,7" DockPanel.Dock="Left" Foreground="Aqua"/>
@@ -127,5 +128,15 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Border x:Name="ElapsedTimeBorder" Visibility="Collapsed" Background="Blue" CornerRadius="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock 
+                x:Name="ElapsedTimeTextBlock" 
+       Foreground="#FFFFFF" 
+       FontSize="24" 
+       FontWeight="Bold" 
+       FontStyle="Italic" 
+       TextAlignment="Center">
+            </TextBlock>
+        </Border>
     </Grid>
 </Window>

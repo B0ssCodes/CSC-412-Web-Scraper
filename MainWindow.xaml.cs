@@ -45,7 +45,6 @@ namespace CSC_412_Web_Scraper
             ScrapingText.Visibility = Visibility.Visible;
             UrlTextBlock.Visibility = Visibility.Visible;
 
-
             // Create a new scraper object
             var scraper = new Scraper();
 
@@ -57,20 +56,36 @@ namespace CSC_412_Web_Scraper
                 UrlTextBlock.Text = report.Url;  // Assuming you have a TextBlock named UrlTextBlock
             });
 
+            // Start the stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             // Use a Task.Run to not block the UI thread and run the backend logic on a separate thread
             Task.Run(() => scraper.StartScraping(progress)).ContinueWith(t =>
             {
+                stopwatch.Stop();
                 if (t.IsFaulted)
                 {
                     // Handle Exceptions
+                    Debug.WriteLine($"Exception: {t.Exception}");
                 }
                 else
                 {
                     // Update the UI with the scraped data
                     UpdateCarData(scraper.scrapedItems);
+
+                    // Print the elapsed time
+                    TimeSpan ts = stopwatch.Elapsed;
+                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts.Hours, ts.Minutes, ts.Seconds,
+                        ts.Milliseconds / 10);
+                    ElapsedTimeBorder.Visibility = Visibility.Visible;
+                    ElapsedTimeTextBlock.Text = "RunTime " + elapsedTime;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext()); // Ensure the continuation runs on the UI thread
         }
+
+
 
         public void UpdateCarData(IEnumerable<Scraper.ScrapedItem> scrapedItems)
         {
@@ -135,6 +150,7 @@ namespace CSC_412_Web_Scraper
             var hyperlink = (Hyperlink)e.OriginalSource;
             Process.Start(new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) { UseShellExecute = true });
         }
+
     }
 
     
