@@ -6,66 +6,72 @@
         xmlns:local="clr-namespace:CSC_412_Web_Scraper"
         mc:Ignorable="d"
         Title="Web Scraper" 
-        WindowState="Maximized"
-        Background="#4169E1">
+        WindowState="Maximized">
     <Grid>
         <Grid.Background>
-            <RadialGradientBrush>
-                <GradientStop Color="#4169E1" Offset="0" />
-                <GradientStop Color="#00008B" Offset="1" />
-            </RadialGradientBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF008080" Offset="0" />
+                <GradientStop Color="#FF1E90FF" Offset="1" />
+            </LinearGradientBrush>
         </Grid.Background>
-        <Ellipse Fill="#B0C4DE" Opacity="0.2" Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
-            
-            
-        </Ellipse>
-        <Ellipse Fill="#B0C4DE" Opacity="0.2" Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+        <Ellipse Fill="#80FFFFFF" Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Ellipse.RenderTransform>
-                <RotateTransform x:Name="RotateTransform2" />
+                <ScaleTransform ScaleX="1" ScaleY="1" />
             </Ellipse.RenderTransform>
             <Ellipse.Triggers>
                 <EventTrigger RoutedEvent="Ellipse.Loaded">
                     <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="RotateTransform2" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:30" RepeatBehavior="Forever" />
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.5" To="1" Duration="0:0:2" AutoReverse="True" />
+                            
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
             </Ellipse.Triggers>
         </Ellipse>
-        
-        <Ellipse Fill="#B0C4DE" Opacity="0.2" Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+
+        <Ellipse Fill="#80FFFFFF" Width="300" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300">
             <Ellipse.RenderTransform>
-                <RotateTransform x:Name="RotateTransform3" />
+                <ScaleTransform ScaleX="1" ScaleY="1" />
             </Ellipse.RenderTransform>
             <Ellipse.Triggers>
                 <EventTrigger RoutedEvent="Ellipse.Loaded">
                     <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="RotateTransform3" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:30" RepeatBehavior="Forever" />
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.2" To="1" Duration="0:0:3" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.ScaleX)" From="1" To="1.2" Duration="0:0:10" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.ScaleY)" From="1" To="1.2" Duration="0:0:10" AutoReverse="True" />
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
             </Ellipse.Triggers>
         </Ellipse>
+
+        <Ellipse Fill="#80FFFFFF" Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="300">
+            <Ellipse.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+            </Ellipse.RenderTransform>
+            <Ellipse.Triggers>
+                <EventTrigger RoutedEvent="Ellipse.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.2" To="1" Duration="0:0:4" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.ScaleX)" From="1" To="1.6" Duration="0:0:6" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.ScaleY)" From="1" To="1.6" Duration="0:0:6" AutoReverse="True" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Ellipse.Triggers>
+        </Ellipse>
+
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
             <TextBlock Text="Welcome to the Web Scraper" FontWeight="Bold" FontSize="24" TextAlignment="Center" Margin="0,0,0,30" Foreground="#FFFFFF" />
             <TextBlock Text="Websites that will be scraped:" FontWeight="Bold" FontSize="18" TextAlignment="Center" Margin="0,0,0,20" Foreground="#FFFFFF" />
             <TextBlock Text="Zoom Motors - zoom-motors.netlify.app" FontSize="16" TextAlignment="Center" Margin="0,0,0,10" Foreground="#FFFFFF" />
             <TextBlock Text="DriveWay Deals - driveway-deals.netlify.app" FontSize="16" TextAlignment="Center" Margin="0,0,0,10" Foreground="#FFFFFF" />
             <TextBlock Text="Easy Auto - easy-auto.netlify.app" FontSize="16" TextAlignment="Center" Margin="0,0,0,30" Foreground="#FFFFFF" />
-            <Button x:Name="StartButton" Content="Start Scraping" Click="StartButton_Click" Width="200" Height="50" FontSize="18" Margin="0,0,0,30" Background="#1E90FF" Foreground="White">
-                <Button.Triggers>
-                    <EventTrigger RoutedEvent="Button.Click">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.5" Duration="0:0:0.5" AutoReverse="True"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Button.Triggers>
-            </Button>
-            
+            <Button x:Name="StartButton" Click="StartButton_Click" Content="Start Scraping" Width="200" Height="50" FontSize="18" Margin="0,0,0,30" Background="#1E90FF" Foreground="White" />
             <TextBlock Name="ScrapingText" Text="Scraping..." FontWeight="Bold" FontSize="20" TextAlignment="Center" Visibility="Collapsed" Foreground="#FFFFFF" />
             <DockPanel LastChildFill="False">
                 <ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Minimum="0" Maximum="47" Visibility="Collapsed" Width="400" Height="20" Margin="0,7" DockPanel.Dock="Left" Foreground="Aqua"/>
@@ -73,31 +79,37 @@
             </DockPanel>
             <TextBlock x:Name="UrlTextBlock" TextAlignment="Center" Margin="0, 3" Visibility="Collapsed" Foreground="#FFFFFF" />
         </StackPanel>
+
         <DataGrid x:Name="CarDataGrid" AutoGenerateColumns="False" 
-              RowBackground="#4169E1" AlternatingRowBackground="#1E90FF" 
-              GridLinesVisibility="Horizontal" 
-              HeadersVisibility="Column" 
-              CanUserAddRows="False" 
-              CanUserDeleteRows="False" 
-              CanUserReorderColumns="False" 
-              CanUserResizeColumns="True" 
-              CanUserResizeRows="False" 
-              CanUserSortColumns="True" 
-              ColumnHeaderHeight="30" 
-              RowHeight="25" 
-              FontSize="14" 
-              FontWeight="Normal" 
-              HorizontalGridLinesBrush="LightGray" 
-              VerticalGridLinesBrush="Transparent" 
-              HorizontalScrollBarVisibility="Auto" 
-              VerticalScrollBarVisibility="Auto"
-              Visibility="Collapsed"
-              Background="#4169E1"
-              Foreground="#FFFFFF">
+          RowBackground="#4169E1" AlternatingRowBackground="#1E90FF" 
+          GridLinesVisibility="Horizontal" 
+          HeadersVisibility="Column" 
+          CanUserAddRows="False" 
+          CanUserDeleteRows="False" 
+          CanUserReorderColumns="False" 
+          CanUserResizeColumns="True" 
+          CanUserResizeRows="False" 
+          CanUserSortColumns="True" 
+          ColumnHeaderHeight="30" 
+          RowHeight="25" 
+          FontSize="14" 
+          FontWeight="Normal" 
+          HorizontalGridLinesBrush="LightGray" 
+          VerticalGridLinesBrush="Transparent" 
+          HorizontalScrollBarVisibility="Auto" 
+          VerticalScrollBarVisibility="Auto"
+          Visibility="Collapsed"
+          Background="#FF008080"
+            Foreground="#FFFFFF"
+          VerticalAlignment="Center">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="Blue"/>
+                    <Setter Property="Background" Value="#FF1E90FF" />
+                    
                     <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                    <Setter Property="Padding" Value="5" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
@@ -105,37 +117,38 @@
                 <DataGridTextColumn Header="Zoom Motors" Binding="{Binding Company1Price}" Width="*" />
                 <DataGridTextColumn Header="DriveWay Deals" Binding="{Binding Company2Price}" Width="*" />
                 <DataGridTextColumn Header="Easy Auto" Binding="{Binding Company3Price}" Width="*" />
-                <DataGridTemplateColumn Header="Our Recommendation">
+                <DataGridTemplateColumn Header="Our Recommendation" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
-                    <Hyperlink NavigateUri="{Binding RecommendedUrl}" RequestNavigate="Hyperlink_Click">
-                        <Hyperlink.Style>
-                            <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground" Value="White" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="LightBlue" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Hyperlink.Style>
-                        <TextBlock Text="{Binding RecommendedUrl}" />
-                    </Hyperlink>
-                </TextBlock>
+                        <Hyperlink NavigateUri="{Binding RecommendedUrl}" RequestNavigate="Hyperlink_Click">
+                            <Hyperlink.Style>
+                                <Style TargetType="Hyperlink">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="LightBlue" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Hyperlink.Style>
+                            <TextBlock Text="{Binding RecommendedUrl}" />
+                        </Hyperlink>
+                    </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Border x:Name="ElapsedTimeBorder" Visibility="Collapsed" Background="Blue" CornerRadius="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Border x:Name="ElapsedTimeBorder" Visibility="Collapsed" Background="#4169E1" CornerRadius="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,90,0,0">
             <TextBlock 
                 x:Name="ElapsedTimeTextBlock" 
-       Foreground="#FFFFFF" 
-       FontSize="24" 
-       FontWeight="Bold" 
-       FontStyle="Italic" 
-       TextAlignment="Center">
+                Foreground="#FFFFFF" 
+                FontSize="24" 
+                FontWeight="Bold" 
+                FontStyle="Italic" 
+                TextAlignment="Center">
             </TextBlock>
         </Border>
     </Grid>
