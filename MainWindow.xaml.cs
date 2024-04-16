@@ -74,13 +74,13 @@ namespace CSC_412_Web_Scraper
                     // Update the UI with the scraped data
                     UpdateCarData(scraper.scrapedItems);
 
-                    // Print the elapsed time
+                    // Display the elapsed time
                     TimeSpan ts = stopwatch.Elapsed;
                     string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                         ts.Hours, ts.Minutes, ts.Seconds,
                         ts.Milliseconds / 10);
                     ElapsedTimeBorder.Visibility = Visibility.Visible;
-                    ElapsedTimeTextBlock.Text = "RunTime " + elapsedTime;
+                    ElapsedTimeTextBlock.Text = "Runtime " + elapsedTime;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext()); // Ensure the continuation runs on the UI thread
         }
