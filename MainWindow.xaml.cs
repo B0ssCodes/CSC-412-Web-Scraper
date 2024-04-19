@@ -5,6 +5,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Windows.Documents;
 using static CSC_412_Web_Scraper.Scraper;
+using System.Windows.Controls;
 
 namespace CSC_412_Web_Scraper
 {
@@ -142,6 +143,9 @@ namespace CSC_412_Web_Scraper
             // When the data is updated, the loading bar and the scraping text become invisible, and the data grid becomes visible
             LoadingBar.Visibility = Visibility.Collapsed;
             ScrapingText.Visibility = Visibility.Collapsed;
+            LoadingBarNum.Visibility = Visibility.Collapsed;
+            SearchBorder.Visibility = Visibility.Visible;
+
             CarDataGrid.Visibility = Visibility.Visible;
         }
 
@@ -152,6 +156,13 @@ namespace CSC_412_Web_Scraper
             Process.Start(new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) { UseShellExecute = true });
         }
 
+        // This Search Box uses a PLINQ query to check if the car name contains the search text and if it does, it creeates a new ObservableCollection with the filtered items
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchBox.Text.ToLower();
+            var filteredItems = CarCollection.AsParallel().Where(car => car.CarName.ToLower().Contains(searchText));
+            CarDataGrid.ItemsSource = new ObservableCollection<CarData>(filteredItems);
+        }
     }
 
     

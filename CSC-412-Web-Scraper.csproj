@@ -10,7 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\search-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.60" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\search-icon.png" />
   </ItemGroup>
 
 </Project>
