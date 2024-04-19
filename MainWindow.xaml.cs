@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Documents;
 using static CSC_412_Web_Scraper.Scraper;
 using System.Windows.Controls;
+using System.Collections.Concurrent;
 
 namespace CSC_412_Web_Scraper
 {
@@ -16,6 +17,7 @@ namespace CSC_412_Web_Scraper
         public string Company1Price { get; set; } = string.Empty;
         public string Company2Price { get; set; } = string.Empty;
         public string Company3Price { get; set; } = string.Empty;
+        public string AveragePrice { get; set; } = string.Empty;
         public string RecommendedCompany { get; set; } = string.Empty;
         public string RecommendedUrl { get; set; } = string.Empty;
     }
@@ -97,7 +99,7 @@ namespace CSC_412_Web_Scraper
             foreach (var item in scrapedItems)
             {
                 // Find the car in the collection, if it doesn't exist, create a new one
-                var carData = CarCollection.FirstOrDefault(c => c.CarName == item.Title);
+                var carData = CarCollection.AsParallel().FirstOrDefault(c => c.CarName == item.Title);
                 if (carData == null)
                 {
                     carData = new CarData { CarName = item.Title };
@@ -123,21 +125,30 @@ namespace CSC_412_Web_Scraper
                 int price2 = int.TryParse(carData.Company2Price, out int tempVal2) ? tempVal2 : int.MaxValue;
                 int price3 = int.TryParse(carData.Company3Price, out int tempVal3) ? tempVal3 : int.MaxValue;
 
+                ConcurrentBag<int> bag = new ConcurrentBag<int>();
+                bag.Add(price1);
+                bag.Add(price2);
+                bag.Add(price3);
+
                 if (price1 <= price2 && price1 <= price3)
                 {
                     carData.RecommendedCompany = "Buy From Zoom Motors: ";
-                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "zoom-motors.netlify.app" && item.Title == carData.CarName).Url;
+                    carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "zoom-motors.netlify.app" && item.Title == carData.CarName).Url;
                 }
                 else if (price2 <= price1 && price2 <= price3)
                 {
                     carData.RecommendedCompany = "driveway-deals.netlify.app";
-                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "driveway-deals.netlify.app" && item.Title == carData.CarName).Url;
+                    carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "driveway-deals.netlify.app" && item.Title == carData.CarName).Url;
                 }
                 else
                 {
                     carData.RecommendedCompany = "easy-auto.netlify.app";
-                    carData.RecommendedUrl = scrapedItems.First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
+                    carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
                 }
+
+                ParallelQuery<int> averagePrice = bag.AsParallel().Where(price => price != int.MaxValue).Where(price => price != 0);
+                carData.AveragePrice = averagePrice.Any() ? Math.Round(averagePrice.Average()).ToString() : "N/A";
+
             }
 
             // When the data is updated, the loading bar and the scraping text become invisible, and the data grid becomes visible
@@ -145,7 +156,7 @@ namespace CSC_412_Web_Scraper
             ScrapingText.Visibility = Visibility.Collapsed;
             LoadingBarNum.Visibility = Visibility.Collapsed;
             SearchBorder.Visibility = Visibility.Visible;
-
+            IntroText.Visibility = Visibility.Collapsed;
             CarDataGrid.Visibility = Visibility.Visible;
         }
 

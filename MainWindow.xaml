@@ -16,7 +16,7 @@
         </Grid.Background>
 
 
-        <Ellipse Fill="#80FFFFFF" Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Ellipse Fill="#80FFFFFF" Width="530" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Ellipse.RenderTransform>
                 <ScaleTransform ScaleX="1" ScaleY="1" />
             </Ellipse.RenderTransform>
@@ -66,7 +66,7 @@
             </Ellipse.Triggers>
         </Ellipse>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" x:Name="IntroText">
             <TextBlock Text="Welcome to the Web Scraper" FontWeight="Bold" FontSize="24" TextAlignment="Center" Margin="0,0,0,30" Foreground="#FFFFFF" />
             <TextBlock Text="Websites that will be scraped:" FontWeight="Bold" FontSize="18" TextAlignment="Center" Margin="0,0,0,20" Foreground="#FFFFFF" />
             <TextBlock Text="Zoom Motors - zoom-motors.netlify.app" FontSize="16" TextAlignment="Center" Margin="0,0,0,10" Foreground="#FFFFFF" />
@@ -86,9 +86,9 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!-- For ElapsedTimeBorder -->
+             
                 <RowDefinition Height="*" />
-                <!-- For DataGrid and SearchBorder -->
+              
             </Grid.RowDefinitions>
 
             <Border x:Name="ElapsedTimeBorder" 
@@ -134,7 +134,8 @@
                       Foreground="#FFFFFF"
                       Grid.Row="1"
                       VerticalAlignment="Center"
-                      HorizontalAlignment="Center">
+                      HorizontalAlignment="Center"
+                      Margin="10">
                 <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="#FF1E90FF" />
@@ -150,7 +151,8 @@
                 <DataGridTextColumn Header="Zoom Motors" Binding="{Binding Company1Price}" Width="*" />
                 <DataGridTextColumn Header="DriveWay Deals" Binding="{Binding Company2Price}" Width="*" />
                 <DataGridTextColumn Header="Easy Auto" Binding="{Binding Company3Price}" Width="*" />
-                <DataGridTemplateColumn Header="Our Recommendation" Width="*">
+                    <DataGridTextColumn Header="Average Price" Binding="{Binding AveragePrice}" Width="*" />
+                    <DataGridTemplateColumn Header="Our Recommendation" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
