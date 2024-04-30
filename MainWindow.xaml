@@ -86,57 +86,79 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-               
             </Grid.RowDefinitions>
 
             <Border x:Name="ElapsedTimeBorder" 
-                    Visibility="Collapsed" 
-                    Background="#4169E1" 
-                    CornerRadius="10" 
-                    Padding="10" 
-                    Grid.Row="0"
-                    HorizontalAlignment="Center"
-                    Margin="0,50,0,0">
+        Visibility="Collapsed" 
+        Background="#4169E1" 
+        CornerRadius="10" 
+        Padding="10" 
+        Grid.Row="0"
+        HorizontalAlignment="Center"
+        Margin="0,50,0,0">
                 <TextBlock 
-                    x:Name="ElapsedTimeTextBlock" 
-                    Foreground="#FFFFFF" 
-                    FontSize="24" 
-                    FontWeight="Bold" 
-                    FontStyle="Italic" 
-                    TextAlignment="Center">
+        x:Name="ElapsedTimeTextBlock" 
+        Foreground="#FFFFFF" 
+        FontSize="24" 
+        FontWeight="Bold" 
+        FontStyle="Italic" 
+        TextAlignment="Center">
                 </TextBlock>
             </Border>
-                
+
+            <Border x:Name="SearchBorder" 
+        Background="White" 
+        Visibility="Collapsed" 
+        CornerRadius="90" 
+        Grid.Row="1"
+        VerticalAlignment="Top"
+        HorizontalAlignment="Right" 
+        Margin="0">
+                <Grid>
+                    <TextBox x:Name="SearchBox"  
+                 FontSize="25" 
+                 Width="300"
+                 TextChanged="SearchBox_TextChanged" 
+                 BorderThickness="0"
+                 />
+                    <Image Source="/images/search-icon.png" 
+               Width="30" 
+               HorizontalAlignment="Right"  
+               RenderTransformOrigin="2.279,0.354"/>
+                </Grid>
+            </Border>
+
             <DataGrid x:Name="CarDataGrid" 
-                      AutoGenerateColumns="False" 
-                      RowBackground="#4169E1" 
-                      AlternatingRowBackground="#1E90FF" 
-                      GridLinesVisibility="Horizontal" 
-                      HeadersVisibility="Column" 
-                      CanUserAddRows="False" 
-                      CanUserDeleteRows="False" 
-                      CanUserReorderColumns="False" 
-                      CanUserResizeColumns="True" 
-                      CanUserResizeRows="False" 
-                      CanUserSortColumns="True" 
-                      ColumnHeaderHeight="30" 
-                      RowHeight="25" 
-                      FontSize="14" 
-                      FontWeight="Normal" 
-                      HorizontalGridLinesBrush="LightGray" 
-                      VerticalGridLinesBrush="Transparent" 
-                      HorizontalScrollBarVisibility="Auto" 
-                      VerticalScrollBarVisibility="Auto"
-                      Visibility="Collapsed"
-                      Background="#FF008080"
-                      Foreground="#FFFFFF"
-                      Grid.Row="1"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Center"
-                      Margin="10">
+           AutoGenerateColumns="False" 
+           RowBackground="#4169E1" 
+           AlternatingRowBackground="#1E90FF" 
+           GridLinesVisibility="Horizontal" 
+           HeadersVisibility="Column" 
+           CanUserAddRows="False" 
+           CanUserDeleteRows="False" 
+           CanUserReorderColumns="False" 
+           CanUserResizeColumns="True" 
+           CanUserResizeRows="False" 
+           CanUserSortColumns="True" 
+           ColumnHeaderHeight="30" 
+           RowHeight="25" 
+           FontSize="14" 
+           FontWeight="Normal" 
+           HorizontalGridLinesBrush="LightGray" 
+           VerticalGridLinesBrush="Transparent" 
+           HorizontalScrollBarVisibility="Auto" 
+           VerticalScrollBarVisibility="Auto"
+           Visibility="Collapsed"
+           Background="#FF008080"
+           Foreground="#FFFFFF"
+           Grid.Row="2"
+           VerticalAlignment="Center"
+           HorizontalAlignment="Center"
+           Margin="10">
                 <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="#FF1E90FF" />
@@ -177,27 +199,7 @@
             </DataGrid.Columns>
             </DataGrid>
 
-            <Border x:Name="SearchBorder" 
-                    Background="White" 
-                    Visibility="Collapsed" 
-                    CornerRadius="90" 
-                    Grid.Row="1"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right" 
-                    Margin="0">
-                <Grid>
-                    <TextBox x:Name="SearchBox"  
-                             FontSize="25" 
-                             Width="300"
-                             TextChanged="SearchBox_TextChanged" 
-                             BorderThickness="0"
-                             />
-                    <Image Source="/images/search-icon.png" 
-                           Width="30" 
-                           HorizontalAlignment="Right"  
-                           RenderTransformOrigin="2.279,0.354"/>
-                </Grid>
-            </Border>
+            
 
             <StackPanel Orientation="Horizontal" 
              HorizontalAlignment="Center" 
