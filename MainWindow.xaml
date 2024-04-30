@@ -86,9 +86,10 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-             
                 <RowDefinition Height="*" />
-              
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+               
             </Grid.RowDefinitions>
 
             <Border x:Name="ElapsedTimeBorder" 
@@ -108,7 +109,7 @@
                     TextAlignment="Center">
                 </TextBlock>
             </Border>
-
+                
             <DataGrid x:Name="CarDataGrid" 
                       AutoGenerateColumns="False" 
                       RowBackground="#4169E1" 
@@ -197,6 +198,16 @@
                            RenderTransformOrigin="2.279,0.354"/>
                 </Grid>
             </Border>
+
+            <StackPanel Orientation="Horizontal" 
+             HorizontalAlignment="Center" 
+             Grid.Row="3">
+                <Button Name="ExcelButton" Click="ExcelButton_Click" Visibility="Collapsed" Content="Export to Excel"  Width="120" Height="30" Margin="0,60,60,70"/>
+                <Button Name="CSVButton" Click="CSVButton_Click" Visibility="Collapsed" Content="Export as CSV" Width="120" Height="30" Margin="0,60,60,70"/>
+            </StackPanel>
         </Grid>
+
+        
     </Grid>
+    
 </Window>

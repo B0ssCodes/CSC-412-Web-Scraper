@@ -7,6 +7,12 @@ using System.Windows.Documents;
 using static CSC_413_Web_Scraper.Scraper;
 using System.Windows.Controls;
 using System.Collections.Concurrent;
+using OfficeOpenXml;
+using System.IO;
+using CsvHelper;
+using System.Globalization;
+
+
 
 namespace CSC_413_Web_Scraper
 {
@@ -134,12 +140,12 @@ namespace CSC_413_Web_Scraper
                 }
                 else if (price2 <= price1 && price2 <= price3)
                 {
-                    carData.RecommendedCompany = "driveway-deals.netlify.app";
+                    carData.RecommendedCompany = "Buy From Driveway Deals: ";
                     carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "driveway-deals.netlify.app" && item.Title == carData.CarName).Url;
                 }
                 else
                 {
-                    carData.RecommendedCompany = "easy-auto.netlify.app";
+                    carData.RecommendedCompany = "Buy From Easy Auto: ";
                     carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
                 }
 
@@ -156,6 +162,9 @@ namespace CSC_413_Web_Scraper
             SearchBorder.Visibility = Visibility.Visible;
             IntroText.Visibility = Visibility.Collapsed;
             CarDataGrid.Visibility = Visibility.Visible;
+            ExcelButton.Visibility = Visibility.Visible;
+            CSVButton.Visibility = Visibility.Visible;
+            
         }
 
         // Open the URL in the default browser when the hyperlink is clicked
@@ -163,6 +172,83 @@ namespace CSC_413_Web_Scraper
         {
             var hyperlink = (Hyperlink)e.OriginalSource;
             Process.Start(new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) { UseShellExecute = true });
+        }
+
+        // Uses the EPPlus package to write the data to an Excel file and saves it to the desktop.
+        private void ExcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                //Create the worksheet
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("CarData");
+
+                // Specify the column names
+                ws.Cells[1, 1].Value = "Car Name";
+                ws.Cells[1, 2].Value = "Dealer 1 Price";
+                ws.Cells[1, 3].Value = "Dealer 2 Price";
+                ws.Cells[1, 4].Value = "Dealer 3 Price";
+                ws.Cells[1,5].Value = "Average Price";
+                ws.Cells[1,6].Value = "Recommended Company";
+                ws.Cells[1,7].Value = "Recommended URL";
+
+                // Loop over the data and add it to the Excel file
+                int rowStart = 2;
+                foreach (var item in CarCollection)
+                {
+                    ws.Cells[rowStart, 1].Value = item.CarName;
+                    ws.Cells[rowStart, 2].Value = item.Company1Price;
+                    ws.Cells[rowStart, 3].Value = item.Company2Price;
+                    ws.Cells[rowStart, 4].Value = item.Company3Price;
+                    ws.Cells[rowStart, 5].Value = item.AveragePrice;
+                    ws.Cells[rowStart, 6].Value = item.RecommendedCompany;
+                    ws.Cells[rowStart, 7].Value = item.RecommendedUrl;
+                    rowStart++;
+                }
+
+                // Get the desktop path and the file path
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string filePath = Path.Combine(desktopPath, "CarData.xlsx");
+
+                // Check if the file exists
+                if (File.Exists(filePath))
+                {
+                    // If the file already exists, delete it
+                    File.Delete(filePath);
+                }
+
+                // Save the new file to the desktop
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    pck.SaveAs(fs);
+                }
+
+                // Display a message box to notify the user that the file has been saved
+                MessageBox.Show("Excel file saved to desktop successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        
+        // Uses the CSVHelper package to write the data to a CSV file and saves it to the desktop.
+        private void CSVButton_Click(object sender, RoutedEventArgs e)
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(desktopPath, "CarData.csv");
+
+            // Check if the file exists
+            if (File.Exists(filePath))
+            {
+                // If file exists, delete it
+                File.Delete(filePath);
+            }
+
+            using (var writer = new StreamWriter(filePath))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(CarCollection);
+            }
+
+            // Display a message box to notify the user that the file has been saved
+            MessageBox.Show("CSV file saved to desktop successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         // This Search Box uses a PLINQ query to check if the car name contains the search text and if it does, it creeates a new ObservableCollection with the filtered items
