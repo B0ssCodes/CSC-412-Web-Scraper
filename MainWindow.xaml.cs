@@ -177,78 +177,89 @@ namespace CSC_413_Web_Scraper
         // Uses the EPPlus package to write the data to an Excel file and saves it to the desktop.
         private void ExcelButton_Click(object sender, RoutedEventArgs e)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (ExcelPackage pck = new ExcelPackage())
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = "CarData"; // Default file name
+            dialog.DefaultExt = ".xlsx"; // Default file extension
+            dialog.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+
+            // Show save file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
             {
-                //Create the worksheet
-                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("CarData");
+                // Save document
+                string filename = dialog.FileName;
 
-                // Specify the column names
-                ws.Cells[1, 1].Value = "Car Name";
-                ws.Cells[1, 2].Value = "Dealer 1 Price";
-                ws.Cells[1, 3].Value = "Dealer 2 Price";
-                ws.Cells[1, 4].Value = "Dealer 3 Price";
-                ws.Cells[1,5].Value = "Average Price";
-                ws.Cells[1,6].Value = "Recommended Company";
-                ws.Cells[1,7].Value = "Recommended URL";
-
-                // Loop over the data and add it to the Excel file
-                int rowStart = 2;
-                foreach (var item in CarCollection)
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage pck = new ExcelPackage())
                 {
-                    ws.Cells[rowStart, 1].Value = item.CarName;
-                    ws.Cells[rowStart, 2].Value = item.Company1Price;
-                    ws.Cells[rowStart, 3].Value = item.Company2Price;
-                    ws.Cells[rowStart, 4].Value = item.Company3Price;
-                    ws.Cells[rowStart, 5].Value = item.AveragePrice;
-                    ws.Cells[rowStart, 6].Value = item.RecommendedCompany;
-                    ws.Cells[rowStart, 7].Value = item.RecommendedUrl;
-                    rowStart++;
+                    //Create the worksheet
+                    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("CarData");
+
+                    // Specify the column names
+                    ws.Cells[1, 1].Value = "Car Name";
+                    ws.Cells[1, 2].Value = "Dealer 1 Price";
+                    ws.Cells[1, 3].Value = "Dealer 2 Price";
+                    ws.Cells[1, 4].Value = "Dealer 3 Price";
+                    ws.Cells[1, 5].Value = "Average Price";
+                    ws.Cells[1, 6].Value = "Recommended Company";
+                    ws.Cells[1, 7].Value = "Recommended URL";
+
+                    // Loop over the data and add it to the Excel file
+                    int rowStart = 2;
+                    foreach (var item in CarCollection)
+                    {
+                        ws.Cells[rowStart, 1].Value = item.CarName;
+                        ws.Cells[rowStart, 2].Value = item.Company1Price;
+                        ws.Cells[rowStart, 3].Value = item.Company2Price;
+                        ws.Cells[rowStart, 4].Value = item.Company3Price;
+                        ws.Cells[rowStart, 5].Value = item.AveragePrice;
+                        ws.Cells[rowStart, 6].Value = item.RecommendedCompany;
+                        ws.Cells[rowStart, 7].Value = item.RecommendedUrl;
+                        rowStart++;
+                    }
+
+                    // Save the new file to the selected path
+                    using (FileStream fs = new FileStream(filename, FileMode.Create))
+                    {
+                        pck.SaveAs(fs);
+                    }
+
+                    // Display a message box to notify the user that the file has been saved
+                    MessageBox.Show("Excel file saved successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-
-                // Get the desktop path and the file path
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string filePath = Path.Combine(desktopPath, "CarData.xlsx");
-
-                // Check if the file exists
-                if (File.Exists(filePath))
-                {
-                    // If the file already exists, delete it
-                    File.Delete(filePath);
-                }
-
-                // Save the new file to the desktop
-                using (FileStream fs = new FileStream(filePath, FileMode.Create))
-                {
-                    pck.SaveAs(fs);
-                }
-
-                // Display a message box to notify the user that the file has been saved
-                MessageBox.Show("Excel file saved to desktop successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-        
+
         // Uses the CSVHelper package to write the data to a CSV file and saves it to the desktop.
         private void CSVButton_Click(object sender, RoutedEventArgs e)
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath = Path.Combine(desktopPath, "CarData.csv");
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = "CarData"; // Default file name
+            dialog.DefaultExt = ".csv"; // Default file extension
+            dialog.Filter = "CSV documents (.csv)|*.csv"; // Filter files by extension
 
-            // Check if the file exists
-            if (File.Exists(filePath))
+            // Show save file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
             {
-                // If file exists, delete it
-                File.Delete(filePath);
-            }
+                // Save document
+                string filename = dialog.FileName;
 
-            using (var writer = new StreamWriter(filePath))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                csv.WriteRecords(CarCollection);
-            }
+                
 
-            // Display a message box to notify the user that the file has been saved
-            MessageBox.Show("CSV file saved to desktop successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                using (var writer = new StreamWriter(filename))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(CarCollection);
+                }
+
+                // Display a message box to notify the user that the file has been saved
+                MessageBox.Show("CSV file saved successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         // This Search Box uses a PLINQ query to check if the car name contains the search text and if it does, it creeates a new ObservableCollection with the filtered items
