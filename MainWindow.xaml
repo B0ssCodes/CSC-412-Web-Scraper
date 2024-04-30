@@ -184,7 +184,7 @@
                     Grid.Row="1"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right" 
-                    Margin="0,20,30,0">
+                    Margin="0">
                 <Grid>
                     <TextBox x:Name="SearchBox"  
                              FontSize="25" 
