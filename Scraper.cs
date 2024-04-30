@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CSC_412_Web_Scraper
+namespace CSC_413_Web_Scraper
 {
     // The Scraper class that will be used to scrape the websites
     public class Scraper

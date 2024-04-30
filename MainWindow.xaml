@@ -1,4 +1,4 @@
-﻿<Window x:Class="CSC_412_Web_Scraper.MainWindow"
+﻿<Window x:Class="CSC_413_Web_Scraper.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -189,7 +189,8 @@
                              FontSize="25" 
                              Width="300"
                              TextChanged="SearchBox_TextChanged" 
-                             BorderThickness="0"/>
+                             BorderThickness="0"
+                             />
                     <Image Source="/images/search-icon.png" 
                            Width="30" 
                            HorizontalAlignment="Right"  

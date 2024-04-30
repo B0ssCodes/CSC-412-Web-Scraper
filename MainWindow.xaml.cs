@@ -4,11 +4,11 @@ using System.Windows;
 using System.Linq;
 using System.Diagnostics;
 using System.Windows.Documents;
-using static CSC_412_Web_Scraper.Scraper;
+using static CSC_413_Web_Scraper.Scraper;
 using System.Windows.Controls;
 using System.Collections.Concurrent;
 
-namespace CSC_412_Web_Scraper
+namespace CSC_413_Web_Scraper
 {
     // Class that stores the name of each car and its price at each company
     public class CarData
@@ -31,7 +31,7 @@ namespace CSC_412_Web_Scraper
         public MainWindow()
         {
             InitializeComponent();
-            CarCollection = new ObservableCollection<CarData>();
+            CarCollection = [];
             CarDataGrid.ItemsSource = CarCollection;
 
             // Set the data context of the window to itself
@@ -120,15 +120,12 @@ namespace CSC_412_Web_Scraper
                         break;
                 }
 
-                // After setting the prices, compare them and set the RecommendedCompany
+                // After setting the prices, compare them and set the RecommendedCompany based on the lowest price
                 int price1 = int.TryParse(carData.Company1Price, out int tempVal1) ? tempVal1 : int.MaxValue;
                 int price2 = int.TryParse(carData.Company2Price, out int tempVal2) ? tempVal2 : int.MaxValue;
                 int price3 = int.TryParse(carData.Company3Price, out int tempVal3) ? tempVal3 : int.MaxValue;
 
-                ConcurrentBag<int> bag = new ConcurrentBag<int>();
-                bag.Add(price1);
-                bag.Add(price2);
-                bag.Add(price3);
+                ConcurrentBag<int> bag = [price1, price2, price3];
 
                 if (price1 <= price2 && price1 <= price3)
                 {
@@ -146,6 +143,7 @@ namespace CSC_412_Web_Scraper
                     carData.RecommendedUrl = scrapedItems.AsParallel().First(item => item.Domain == "easy-auto.netlify.app" && item.Title == carData.CarName).Url;
                 }
 
+                // Calculate the average price of the car at different companies using PLINQ
                 ParallelQuery<int> averagePrice = bag.AsParallel().Where(price => price != int.MaxValue).Where(price => price != 0);
                 carData.AveragePrice = averagePrice.Any() ? Math.Round(averagePrice.Average()).ToString() : "N/A";
 
